@@ -52,3 +52,23 @@ Some of the *ASR architectural components* are implemented in ECX.
 - Easy DR Drills for the compliance auditing report submission. With ECX as your DR solution, you can easily run the DR Drills including the production and the DR site. DR Drill is initiated as failover on dummy failure and it simulates failure detection by monitoring process to validate the DR replication and workload functionality.
 
 ## In case of ECX: considerations to keep in mind while designing the ASR as DR solution
+
+- It is recommended to have the management layer up and running as ~~Hot or~~ warm DR in the DR site (i.e. ~~databases,~~ Domain controllers, MFA, RDS servers etc.)
+- The best practice is to have the network for the DR site setup and keep it in active or passive mode whatever works for the organization as per their practices.
+
+- Always have the application gateway with waf (if needed and recommended for layer 7 protection at https) to be setup in the DR site and keep the Ip addresses defined for the traffic manager profiles. (Try to use ~~a CNAME~~ an ECX DDNS Resource for the DNS entries) so that the automatic DNS resolutions can be taken care of in the backend when the DR site ~~is spined up~~ become active. 
+
+- ~~Always refer the support matrix for the workloads and configurations that are recommended to be used with ASR as DR.~~
+- ~~Try to have beyond 24-hour retention policy for the critical workloads (ASR now supports up to 15 days retention policy)~~  
+  **No need for retention policy. ECX Replicator (synchronous replication) attains no-data-loss for failures (crash consistency).**
+
+- ~~Avoid using fully automated failover while using cold DR strategy to not be caught up with false alarms.~~
+- Always monitor the health of the replication and take immediate action to resolve any errors.
+
+## In case of ECX: SLA for Site Recovery
+
+- For each Protected Instance configured for On-Premises-to-On-Premises Failover, we guarantee ~~at least 99.9%~~ 99.999% availability of the Site Recovery service.
+- For each Protected Instance configured for On-Premises-to-Azure planned and unplanned Failover, we guarantee a ~~two-hour~~ five-minutes Recovery Time Objective.
+
+## In case of ECX: Workload summary while using ASR for the replication
+
